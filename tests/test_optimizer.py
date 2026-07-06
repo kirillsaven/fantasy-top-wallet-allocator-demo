@@ -1,7 +1,93 @@
+from itertools import combinations
+
+import pytest
+
 from fantasy_strategy_demo.io import load_wallet_fixture
-from fantasy_strategy_demo.models import Card, LeagueRules, Tournament
+from fantasy_strategy_demo.models import Card, Deck, LeagueRules, Tournament
 from fantasy_strategy_demo.optimizer import build_greedy_tournament_allocation, build_tournament_allocation
 from fantasy_strategy_demo.telegram_adapter import handle_message
+
+
+def _test_deck_utility(cards: tuple[Card, ...], rules: LeagueRules) -> tuple[float, float, int, float]:
+    """Independent test-side copy of the public demo objective."""
+    score = sum(card.card_score for card in cards)
+    upside = sum(card.upside for card in cards)
+    downside = sum(card.downside for card in cards)
+    market_cost = sum(card.market_price_eth for card in cards)
+    total_stars = sum(card.stars for card in cards)
+
+    utility = score + upside * rules.risk_appetite - downside * (1.0 - rules.risk_appetite) - market_cost * 125.0
+    return score, utility, total_stars, market_cost
+
+
+def _test_candidate_decks(cards: tuple[Card, ...], rules: LeagueRules, slot: int) -> tuple[Deck, ...]:
+    candidates: list[Deck] = []
+    for combo in combinations(cards, rules.deck_size):
+        if any(rules.name not in card.eligible_leagues for card in combo):
+            continue
+        if sum(card.stars for card in combo) > rules.max_total_stars:
+            continue
+        market_cost = sum(card.market_price_eth for card in combo)
+        if rules.max_market_cost_eth is not None and market_cost > rules.max_market_cost_eth:
+            continue
+        score, utility, total_stars, market_cost = _test_deck_utility(combo, rules)
+        candidates.append(
+            Deck(
+                league=rules.name,
+                slot=slot,
+                cards=tuple(sorted(combo, key=lambda card: card.card_score, reverse=True)),
+                score=score,
+                utility=utility,
+                total_stars=total_stars,
+                market_cost_eth=market_cost,
+            )
+        )
+    return tuple(candidates)
+
+
+def _test_allocation_rank(decks: tuple[Deck, ...]) -> tuple[int, float, float, float]:
+    return (
+        len(decks),
+        sum(deck.utility for deck in decks),
+        sum(deck.score for deck in decks),
+        -sum(deck.market_cost_eth for deck in decks),
+    )
+
+
+def _independent_bruteforce_best_rank(
+    cards: tuple[Card, ...],
+    leagues: tuple[LeagueRules, ...],
+) -> tuple[int, float, float, float]:
+    """Exhaustive verifier for small fixtures; deliberately separate from optimizer.py."""
+    slot_candidates: list[tuple[Deck, ...]] = []
+    for rules in leagues:
+        for slot in range(1, rules.deck_slots + 1):
+            candidates = _test_candidate_decks(cards, rules, slot)
+            if candidates:
+                slot_candidates.append(candidates)
+
+    best_rank: tuple[int, float, float, float] = (0, 0.0, 0.0, -0.0)
+
+    def walk(index: int, used_card_ids: set[str], chosen: tuple[Deck, ...]) -> None:
+        nonlocal best_rank
+        current_rank = _test_allocation_rank(chosen)
+        if current_rank > best_rank:
+            best_rank = current_rank
+        if index >= len(slot_candidates):
+            return
+
+        # Partial fallback path, matching the public demo contract: fill as many
+        # feasible slots as possible, then optimize utility/score/cost.
+        walk(index + 1, used_card_ids, chosen)
+
+        for deck in slot_candidates[index]:
+            deck_ids = deck.card_ids()
+            if deck_ids.intersection(used_card_ids):
+                continue
+            walk(index + 1, used_card_ids | deck_ids, chosen + (deck,))
+
+    walk(0, set(), tuple())
+    return best_rank
 
 
 def test_tournament_allocation_uses_cards_once():
@@ -64,6 +150,32 @@ def test_telegram_report_command_returns_allocation():
     assert "Fantasy Top Wallet Allocation" in response
     assert "Wallet: `demo-wallet-seven`" in response
     assert "Tournament: Main Tournament Demo 109" in response
+
+
+def test_global_optimizer_matches_independent_bruteforce_on_small_fixture():
+    tournament = Tournament(name="Bruteforce Cup", starts_at="2026-07-13T18:00:00Z", status="upcoming")
+    leagues = (
+        LeagueRules(name="Alpha", deck_size=2, max_total_stars=4, risk_appetite=0.40),
+        LeagueRules(name="Beta", deck_size=2, max_total_stars=4, risk_appetite=0.35),
+        LeagueRules(name="Gamma", deck_size=2, max_total_stars=4, risk_appetite=0.30),
+    )
+    cards = (
+        Card("shared_a", "SharedA", "common", 2, 120, 150, 95, 0.01, ("Alpha", "Beta")),
+        Card("shared_b", "SharedB", "rare", 2, 100, 140, 70, 0.02, ("Alpha", "Gamma")),
+        Card("alpha_only", "AlphaOnly", "common", 1, 95, 110, 85, 0.00, ("Alpha",)),
+        Card("beta_only", "BetaOnly", "common", 1, 94, 108, 84, 0.00, ("Beta",)),
+        Card("gamma_only", "GammaOnly", "common", 1, 93, 107, 83, 0.00, ("Gamma",)),
+        Card("beta_gamma", "BetaGamma", "rare", 2, 90, 130, 65, 0.02, ("Beta", "Gamma")),
+    )
+
+    allocation = build_tournament_allocation("demo", tournament, cards, leagues)
+    actual_rank = _test_allocation_rank(allocation.decks)
+    expected_rank = _independent_bruteforce_best_rank(cards, leagues)
+
+    assert actual_rank[0] == expected_rank[0]
+    assert actual_rank[1] == pytest.approx(expected_rank[1])
+    assert actual_rank[2] == pytest.approx(expected_rank[2])
+    assert actual_rank[3] == pytest.approx(expected_rank[3])
 
 
 def test_global_optimizer_beats_greedy_counterexample():
