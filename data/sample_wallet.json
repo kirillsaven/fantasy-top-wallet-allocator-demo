@@ -1,0 +1,353 @@
+{
+  "tournament": {
+    "name": "Main Tournament Demo 109",
+    "starts_at": "2026-07-13T18:00:00Z",
+    "status": "upcoming"
+  },
+  "leagues": [
+    {
+      "name": "Diamond",
+      "deck_size": 5,
+      "max_total_stars": 30,
+      "deck_slots": 1,
+      "max_market_cost_eth": 2.5,
+      "risk_appetite": 0.45
+    },
+    {
+      "name": "Platinum",
+      "deck_size": 5,
+      "max_total_stars": 25,
+      "deck_slots": 1,
+      "max_market_cost_eth": 1.4,
+      "risk_appetite": 0.42
+    },
+    {
+      "name": "Gold",
+      "deck_size": 5,
+      "max_total_stars": 22,
+      "deck_slots": 1,
+      "max_market_cost_eth": 0.8,
+      "risk_appetite": 0.38
+    },
+    {
+      "name": "Silver",
+      "deck_size": 5,
+      "max_total_stars": 18,
+      "deck_slots": 1,
+      "max_market_cost_eth": 0.35,
+      "risk_appetite": 0.35
+    },
+    {
+      "name": "Bronze",
+      "deck_size": 5,
+      "max_total_stars": 14,
+      "deck_slots": 1,
+      "max_market_cost_eth": 0.16,
+      "risk_appetite": 0.30
+    }
+  ],
+  "wallets": [
+    {
+      "wallet": "demo-wallet-seven",
+      "cards": [
+        {
+          "card_id": "d001",
+          "handle": "FinalBoss",
+          "rarity": "legendary",
+          "stars": 6,
+          "projected_score": 820,
+          "upside_score": 1040,
+          "downside_score": 610,
+          "market_price_eth": 0.54,
+          "eligible_leagues": ["Diamond"]
+        },
+        {
+          "card_id": "d002",
+          "handle": "MacroWhale",
+          "rarity": "legendary",
+          "stars": 6,
+          "projected_score": 790,
+          "upside_score": 990,
+          "downside_score": 590,
+          "market_price_eth": 0.48,
+          "eligible_leagues": ["Diamond"]
+        },
+        {
+          "card_id": "d003",
+          "handle": "AttentionKing",
+          "rarity": "epic",
+          "stars": 5,
+          "projected_score": 760,
+          "upside_score": 960,
+          "downside_score": 560,
+          "market_price_eth": 0.31,
+          "eligible_leagues": ["Diamond", "Platinum"]
+        },
+        {
+          "card_id": "d004",
+          "handle": "CycleReader",
+          "rarity": "epic",
+          "stars": 5,
+          "projected_score": 720,
+          "upside_score": 910,
+          "downside_score": 520,
+          "market_price_eth": 0.27,
+          "eligible_leagues": ["Diamond", "Platinum"]
+        },
+        {
+          "card_id": "d005",
+          "handle": "RiskManager",
+          "rarity": "rare",
+          "stars": 4,
+          "projected_score": 690,
+          "upside_score": 840,
+          "downside_score": 560,
+          "market_price_eth": 0.18,
+          "eligible_leagues": ["Diamond", "Platinum", "Gold"]
+        },
+        {
+          "card_id": "p001",
+          "handle": "MetaCaptain",
+          "rarity": "legendary",
+          "stars": 5,
+          "projected_score": 700,
+          "upside_score": 940,
+          "downside_score": 430,
+          "market_price_eth": 0.42,
+          "eligible_leagues": ["Platinum"]
+        },
+        {
+          "card_id": "p002",
+          "handle": "SignalHunter",
+          "rarity": "epic",
+          "stars": 5,
+          "projected_score": 680,
+          "upside_score": 900,
+          "downside_score": 470,
+          "market_price_eth": 0.24,
+          "eligible_leagues": ["Platinum", "Gold"]
+        },
+        {
+          "card_id": "p003",
+          "handle": "ThreadReader",
+          "rarity": "epic",
+          "stars": 4,
+          "projected_score": 650,
+          "upside_score": 820,
+          "downside_score": 480,
+          "market_price_eth": 0.21,
+          "eligible_leagues": ["Platinum", "Gold"]
+        },
+        {
+          "card_id": "p004",
+          "handle": "AlphaDesk",
+          "rarity": "rare",
+          "stars": 4,
+          "projected_score": 640,
+          "upside_score": 790,
+          "downside_score": 500,
+          "market_price_eth": 0.12,
+          "eligible_leagues": ["Platinum", "Gold", "Silver"]
+        },
+        {
+          "card_id": "p005",
+          "handle": "VolatilityLab",
+          "rarity": "rare",
+          "stars": 3,
+          "projected_score": 610,
+          "upside_score": 890,
+          "downside_score": 310,
+          "market_price_eth": 0.10,
+          "eligible_leagues": ["Platinum", "Gold", "Silver"]
+        },
+        {
+          "card_id": "g001",
+          "handle": "MarketMapper",
+          "rarity": "epic",
+          "stars": 5,
+          "projected_score": 620,
+          "upside_score": 820,
+          "downside_score": 420,
+          "market_price_eth": 0.18,
+          "eligible_leagues": ["Gold"]
+        },
+        {
+          "card_id": "g002",
+          "handle": "DeckDoctor",
+          "rarity": "rare",
+          "stars": 4,
+          "projected_score": 600,
+          "upside_score": 770,
+          "downside_score": 440,
+          "market_price_eth": 0.09,
+          "eligible_leagues": ["Gold", "Silver"]
+        },
+        {
+          "card_id": "g003",
+          "handle": "PricingEdge",
+          "rarity": "rare",
+          "stars": 4,
+          "projected_score": 585,
+          "upside_score": 760,
+          "downside_score": 410,
+          "market_price_eth": 0.08,
+          "eligible_leagues": ["Gold", "Silver"]
+        },
+        {
+          "card_id": "g004",
+          "handle": "LateNews",
+          "rarity": "rare",
+          "stars": 3,
+          "projected_score": 560,
+          "upside_score": 820,
+          "downside_score": 300,
+          "market_price_eth": 0.07,
+          "eligible_leagues": ["Gold", "Silver", "Bronze"]
+        },
+        {
+          "card_id": "g005",
+          "handle": "StableSignal",
+          "rarity": "common",
+          "stars": 3,
+          "projected_score": 540,
+          "upside_score": 650,
+          "downside_score": 430,
+          "market_price_eth": 0.03,
+          "eligible_leagues": ["Gold", "Silver", "Bronze"]
+        },
+        {
+          "card_id": "s001",
+          "handle": "ClipFarmer",
+          "rarity": "rare",
+          "stars": 4,
+          "projected_score": 545,
+          "upside_score": 700,
+          "downside_score": 390,
+          "market_price_eth": 0.06,
+          "eligible_leagues": ["Silver"]
+        },
+        {
+          "card_id": "s002",
+          "handle": "DataCloser",
+          "rarity": "rare",
+          "stars": 3,
+          "projected_score": 530,
+          "upside_score": 710,
+          "downside_score": 360,
+          "market_price_eth": 0.05,
+          "eligible_leagues": ["Silver", "Bronze"]
+        },
+        {
+          "card_id": "s003",
+          "handle": "NarrativeScout",
+          "rarity": "common",
+          "stars": 3,
+          "projected_score": 520,
+          "upside_score": 690,
+          "downside_score": 350,
+          "market_price_eth": 0.025,
+          "eligible_leagues": ["Silver", "Bronze"]
+        },
+        {
+          "card_id": "s004",
+          "handle": "ChartWatcher",
+          "rarity": "common",
+          "stars": 2,
+          "projected_score": 500,
+          "upside_score": 630,
+          "downside_score": 380,
+          "market_price_eth": 0.018,
+          "eligible_leagues": ["Silver", "Bronze"]
+        },
+        {
+          "card_id": "s005",
+          "handle": "QuietEdge",
+          "rarity": "common",
+          "stars": 2,
+          "projected_score": 490,
+          "upside_score": 610,
+          "downside_score": 370,
+          "market_price_eth": 0.016,
+          "eligible_leagues": ["Silver", "Bronze"]
+        },
+        {
+          "card_id": "b001",
+          "handle": "BronzeCarry",
+          "rarity": "common",
+          "stars": 4,
+          "projected_score": 510,
+          "upside_score": 700,
+          "downside_score": 320,
+          "market_price_eth": 0.02,
+          "eligible_leagues": ["Bronze"]
+        },
+        {
+          "card_id": "b002",
+          "handle": "BaseBuilder",
+          "rarity": "common",
+          "stars": 3,
+          "projected_score": 480,
+          "upside_score": 600,
+          "downside_score": 350,
+          "market_price_eth": 0.015,
+          "eligible_leagues": ["Bronze"]
+        },
+        {
+          "card_id": "b003",
+          "handle": "SmallCapReader",
+          "rarity": "common",
+          "stars": 3,
+          "projected_score": 455,
+          "upside_score": 580,
+          "downside_score": 330,
+          "market_price_eth": 0.012,
+          "eligible_leagues": ["Bronze"]
+        },
+        {
+          "card_id": "b004",
+          "handle": "BenchValue",
+          "rarity": "common",
+          "stars": 2,
+          "projected_score": 430,
+          "upside_score": 560,
+          "downside_score": 300,
+          "market_price_eth": 0.01,
+          "eligible_leagues": ["Bronze"]
+        },
+        {
+          "card_id": "b005",
+          "handle": "LowStarGlue",
+          "rarity": "common",
+          "stars": 1,
+          "projected_score": 390,
+          "upside_score": 510,
+          "downside_score": 280,
+          "market_price_eth": 0.006,
+          "eligible_leagues": ["Bronze"]
+        },
+        {
+          "card_id": "x001",
+          "handle": "WatchlistOne",
+          "rarity": "common",
+          "stars": 1,
+          "projected_score": 300,
+          "upside_score": 620,
+          "downside_score": 120,
+          "market_price_eth": 0.004,
+          "eligible_leagues": ["Bronze", "Silver"]
+        },
+        {
+          "card_id": "x002",
+          "handle": "IlliquidBet",
+          "rarity": "rare",
+          "stars": 5,
+          "projected_score": 470,
+          "upside_score": 900,
+          "downside_score": 130,
+          "market_price_eth": 0.22,
+          "eligible_leagues": ["Gold", "Platinum"]
+        }
+      ]
+    }
+  ]
+}

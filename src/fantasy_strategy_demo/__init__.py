@@ -1,13 +1,13 @@
-"""Sanitized Fantasy Top strategy demo package."""
+"""Sanitized Fantasy Top Telegram bot demo package."""
 
-from .models import Card, Deck, LeagueRules, StrategyPackage
-from .optimizer import build_strategy_package
+from .models import Card, Deck, LeagueRules, Tournament, TournamentAllocation
+from .optimizer import build_tournament_allocation
 
 __all__ = [
     "Card",
     "Deck",
     "LeagueRules",
-    "StrategyPackage",
-    "build_strategy_package",
+    "Tournament",
+    "TournamentAllocation",
+    "build_tournament_allocation",
 ]
-

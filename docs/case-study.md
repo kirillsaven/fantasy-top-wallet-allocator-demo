@@ -1,36 +1,38 @@
-# Case Study: Web3 Card-Game Decision Support
+# Case Study: Fantasy Top Telegram Bot
 
 ## Context
 
-Fantasy Top combined collectible cards, social attention, tournament scoring, and
-market pricing. Good operators had to understand both gameplay and trading:
-which cards were likely to score, which decks were legal, where market prices
-were misaligned, and when uncertainty made a move too risky.
+Fantasy Top combined collectible cards, social attention, tournament scoring,
+league constraints, and market pricing. A useful operator tool needed to answer
+a practical question quickly: given this wallet and the next tournament, how
+should the cards be distributed across league decks?
 
-The private internal system behind this demo was built to turn that workflow into
-a repeatable review loop.
+The private internal system behind this demo was built to turn that workflow
+into a repeatable Telegram-driven review loop.
 
 ## Role
 
 Kirill acted as the domain expert and operator:
 
-- defined the strategy and product requirements;
+- defined the wallet-to-report product flow;
+- translated game rules into requirements and acceptance criteria;
 - reviewed model and report output against game reality;
 - tested edge cases and failure modes;
-- used AI-assisted development tools to iterate on scripts, dashboards, and
-  reports;
-- kept the system human-reviewed before any irreversible action.
+- used AI-assisted development tools to iterate on scripts, dashboards, bot
+  flows, and reports;
+- kept the system human-reviewed before irreversible actions.
 
 ## Product responsibilities
 
 The internal tool covered:
 
-- portfolio analysis from a player's card inventory;
+- wallet-based portfolio analysis;
+- next-tournament context;
 - hero/player signal review before tournament lock;
-- deck allocation across multiple leagues;
+- all-league deck allocation;
 - market and opportunity-cost checks;
 - buy/hold/sell watchlists;
-- Telegram-style reports for fast operator review;
+- Telegram reports for fast operator review;
 - dashboard/API surfaces for inspection;
 - fail-closed behavior when data was stale, incomplete, or inconsistent.
 
@@ -38,28 +40,29 @@ The internal tool covered:
 
 This repository preserves the public-safe shape of the problem:
 
-- synthetic portfolio input;
+- Telegram-style `/report <wallet>` command handling;
+- synthetic wallet input;
+- upcoming tournament context;
 - league legality constraints;
 - rarity, star, market, and uncertainty signals;
-- deterministic deck package construction;
-- concise report generation;
-- tests around legality and reproducibility.
+- deterministic all-league deck allocation;
+- concise allocation report generation;
+- tests around legality, uniqueness, command handling, and reproducibility.
 
 ## What was intentionally removed
 
 The public demo removes all sensitive operating details: real wallets, live API
-sessions, deployment targets, logs, private market history, and exact trading
-heuristics.
+sessions, deployment targets, logs, private market history, exact trading
+heuristics, and production model artifacts.
 
 ## Why it matters for AI evaluation roles
 
 The project is relevant beyond Web3 because it required the same judgment loop
 used in AI evaluation:
 
-- compare model output against domain reality;
+- compare model/tool output against domain reality;
 - catch hallucinated or stale recommendations;
 - write clear acceptance criteria;
 - test edge cases;
 - distinguish confidence from uncertainty;
 - turn ambiguous outcomes into structured feedback.
-

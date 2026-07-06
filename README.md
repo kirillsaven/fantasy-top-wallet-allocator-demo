@@ -1,86 +1,105 @@
-# Fantasy Top Strategy Bot Demo
+# Fantasy Top Telegram Bot Demo
 
-Sanitized case study and runnable demo based on an internal decision-support system
-for competitive Web3 card-game operations.
+Sanitized case study and runnable demo of a Telegram-style assistant for
+Fantasy Top wallet analysis and tournament deck allocation.
 
-The original private tool supported live portfolio review, deck allocation, market
-checks, and human approval workflows during Fantasy Top tournament cycles. This
-repository is a public-safe demonstration: all data is synthetic, all private
-runtime details were removed, and the optimizer is a compact educational
-implementation rather than a dump of production code.
+The original private tool accepted a player's wallet in Telegram, reviewed that
+wallet's card portfolio for the next tournament, and produced an all-league deck
+allocation report. This public repository keeps that product shape while using
+synthetic wallet data and a compact deterministic optimizer.
 
 ## Why this exists
 
 Competitive Web3 card games mix several hard problems:
 
-- building legal lineups from a changing card portfolio;
-- estimating player/hero strength before a tournament locks;
-- deciding whether a card is better used, held, bought, or sold;
+- reading a changing card portfolio from a wallet;
+- understanding the upcoming tournament and league constraints;
+- estimating card strength before tournament lock;
+- allocating cards across Diamond, Platinum, Gold, Silver, and Bronze decks;
+- keeping card usage exclusive across the full allocation;
 - balancing expected score, volatility, opportunity cost, and market liquidity;
-- producing an action plan that a human operator can review before any trade.
+- returning a concise Telegram-style report that a human operator can review.
 
 This demo shows the core product thinking behind that workflow without exposing
-private wallets, API sessions, market history, logs, or proprietary heuristics.
+real wallets, API sessions, market history, logs, or private heuristics.
 
 ## What the demo does
 
-- Reads a synthetic card portfolio from `data/sample_portfolio.json`.
+- Simulates a Telegram command such as `/report demo-wallet-seven`.
+- Loads a synthetic wallet fixture from `data/sample_wallet.json`.
+- Reads the upcoming tournament and all league rules.
 - Scores cards with rarity, star, market, and uncertainty signals.
-- Builds one legal deck per league using a deterministic optimizer.
-- Keeps card usage exclusive across the generated package.
-- Produces a concise Markdown report for review.
-- Includes tests that guard portfolio legality and deterministic output.
+- Builds legal decks across all configured leagues.
+- Keeps each card exclusive across the generated tournament allocation.
+- Reports unused cards separately.
+- Includes tests for legality, uniqueness, bot-command handling, and output
+  shape.
 
 ## Quick start
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m fantasy_strategy_demo data/sample_portfolio.json
+python -m fantasy_strategy_demo --wallet demo-wallet-seven --fixture data/sample_wallet.json
+python -m fantasy_strategy_demo --telegram-message "/report demo-wallet-seven" --fixture data/sample_wallet.json
 python -m pytest -q
+```
+
+After installation, the console script is also available:
+
+```bash
+fantasy-top-bot-demo --telegram-message "/report demo-wallet-seven"
 ```
 
 ## Example output
 
 ```text
-# Strategy Package
+# Fantasy Top Wallet Allocation
 
-## Bronze
-- projected score: 3395
-- risk-adjusted utility: 2976.8
-- total stars: 12
-- estimated market cost: 0.1060 ETH
-- cards:
-  - AlphaBuilder rare 3 stars (score 930)
-  - SignalScout rare 3 stars (score 885)
-  - MetaRunner common 2 stars (score 560)
-  - DeckPilot common 2 stars (score 520)
-  - StableHand common 2 stars (score 500)
+Wallet: `demo-wallet-seven`
+Tournament: Main Tournament Demo 109
+Status: upcoming
+Starts at: 2026-07-13T18:00:00Z
 
-## Silver
-- projected score: 4195
-- risk-adjusted utility: 4029.4
-- total stars: 17
-- estimated market cost: 0.2270 ETH
-- cards:
-  - TrendSniper epic 5 stars (score 1160)
-  - VolatilityLab epic 5 stars (score 1080)
-  - DataCloser rare 4 stars (score 975)
-  - LateBreaker common 2 stars (score 510)
-  - QuietEdge common 1 stars (score 470)
+## Allocation summary
+- decks built: 5
+- cards used: 25
+- cards left unused: 2
+
+## Diamond Deck 1
+- projected score: 8020
+- total stars: 26
+
+## Platinum Deck 1
+- projected score: 6285
+- total stars: 21
+
+## Gold Deck 1
+- projected score: 4562
+- total stars: 21
+
+## Silver Deck 1
+- projected score: 3172
+- total stars: 15
+
+## Bronze Deck 1
+- projected score: 2365
+- total stars: 14
 ```
 
-## Original project scope
+The real command prints the full card list and unused-card section.
 
-The internal system was broader than this demo. It included:
+## Original private project scope
 
-- portfolio ingestion and reconciliation;
+The internal system was broader than this public demo. It included:
+
+- wallet ingestion and portfolio reconciliation;
 - tournament-aware player/hero prediction;
-- league/deck allocation;
+- all-league deck allocation;
 - market scans and watchlists;
-- Telegram review/approval flows;
-- dashboard/API surfaces;
+- Telegram reports for operator review;
+- dashboard/API surfaces for inspection;
 - regression guards and report-quality audits;
-- fail-closed behavior around missing data or authentication.
+- fail-closed behavior around stale data, missing auth, or inconsistent inputs.
 
 See [docs/case-study.md](docs/case-study.md),
 [docs/architecture.md](docs/architecture.md), and
@@ -102,5 +121,6 @@ See [docs/sanitization.md](docs/sanitization.md).
 ## Portfolio use
 
 This is intended as a public portfolio artifact for AI evaluation, product
-testing, Web3 strategy, and AI-assisted product-building roles. It demonstrates
-the ability to convert domain expertise into a working, tested decision tool.
+testing, Web3 strategy, Telegram bot workflows, and AI-assisted product-building
+roles. It demonstrates the ability to convert domain expertise into a working,
+tested decision tool.

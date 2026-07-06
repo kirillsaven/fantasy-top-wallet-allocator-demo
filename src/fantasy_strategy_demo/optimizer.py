@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from itertools import combinations
 
-from .models import Card, Deck, LeagueRules, StrategyPackage, ensure_unique_card_ids
+from .models import Card, Deck, LeagueRules, Tournament, TournamentAllocation, ensure_unique_card_ids
 
 
 def _deck_utility(cards: tuple[Card, ...], rules: LeagueRules) -> tuple[float, float, int, float]:
@@ -38,6 +38,7 @@ def _is_legal(cards: tuple[Card, ...], rules: LeagueRules, used_card_ids: set[st
 def build_best_deck(
     cards: tuple[Card, ...],
     rules: LeagueRules,
+    slot: int,
     used_card_ids: set[str] | None = None,
 ) -> Deck:
     used = used_card_ids or set()
@@ -50,6 +51,7 @@ def build_best_deck(
         candidates.append(
             Deck(
                 league=rules.name,
+                slot=slot,
                 cards=tuple(sorted(combo, key=lambda card: card.card_score, reverse=True)),
                 score=score,
                 utility=utility,
@@ -64,15 +66,29 @@ def build_best_deck(
     return max(candidates, key=lambda deck: (deck.utility, deck.score, -deck.market_cost_eth))
 
 
-def build_strategy_package(cards: tuple[Card, ...], leagues: tuple[LeagueRules, ...]) -> StrategyPackage:
+def build_tournament_allocation(
+    wallet: str,
+    tournament: Tournament,
+    cards: tuple[Card, ...],
+    leagues: tuple[LeagueRules, ...],
+) -> TournamentAllocation:
     ensure_unique_card_ids(cards)
     used: set[str] = set()
     decks: list[Deck] = []
 
     for rules in leagues:
-        deck = build_best_deck(cards, rules, used)
-        decks.append(deck)
-        used.update(deck.card_ids())
+        for slot in range(1, rules.deck_slots + 1):
+            try:
+                deck = build_best_deck(cards, rules, slot, used)
+            except ValueError:
+                continue
+            decks.append(deck)
+            used.update(deck.card_ids())
 
-    return StrategyPackage(decks=tuple(decks))
-
+    unused_cards = tuple(card for card in cards if card.card_id not in used)
+    return TournamentAllocation(
+        wallet=wallet,
+        tournament=tournament,
+        decks=tuple(decks),
+        unused_cards=unused_cards,
+    )
