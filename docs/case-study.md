@@ -1,4 +1,4 @@
-# Case Study: Fantasy Top Telegram Bot
+# Case Study: Fantasy Top Wallet Allocator
 
 ## Context
 
@@ -8,7 +8,7 @@ a practical question quickly: given this wallet and the next tournament, how
 should the cards be distributed across league decks?
 
 The private internal system behind this demo was built to turn that workflow
-into a repeatable Telegram-driven review loop.
+into a repeatable wallet-to-report review loop with a Telegram interface.
 
 ## Role
 
@@ -29,7 +29,7 @@ The internal tool covered:
 - wallet-based portfolio analysis;
 - next-tournament context;
 - hero/player signal review before tournament lock;
-- all-league deck allocation;
+- all-league deck allocation and global package review;
 - market and opportunity-cost checks;
 - buy/hold/sell watchlists;
 - Telegram reports for fast operator review;
@@ -45,7 +45,7 @@ This repository preserves the public-safe shape of the problem:
 - upcoming tournament context;
 - league legality constraints;
 - rarity, star, market, and uncertainty signals;
-- deterministic all-league deck allocation;
+- global non-overlapping all-league deck allocation for the synthetic fixture;
 - concise allocation report generation;
 - tests around legality, uniqueness, command handling, and reproducibility.
 

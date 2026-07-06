@@ -1,4 +1,4 @@
-# Fantasy Top Telegram Bot Demo
+# Fantasy Top Wallet Allocator Demo
 
 Sanitized case study and runnable demo of a Telegram-style assistant for
 Fantasy Top wallet analysis and tournament deck allocation.
@@ -6,7 +6,31 @@ Fantasy Top wallet analysis and tournament deck allocation.
 The original private tool accepted a player's wallet in Telegram, reviewed that
 wallet's card portfolio for the next tournament, and produced an all-league deck
 allocation report. This public repository keeps that product shape while using
-synthetic wallet data and a compact deterministic optimizer.
+synthetic wallet data and a compact global allocation optimizer for the demo
+fixture.
+
+## Recruiter / Reviewer Summary
+
+This is a sanitized portfolio demo of a private Fantasy Top strategy workflow.
+It demonstrates:
+
+- domain-to-product translation;
+- wallet-to-report flow design;
+- league constraint modeling;
+- global deck allocation over a synthetic fixture;
+- risk-adjusted scoring;
+- synthetic data design;
+- QA tests for legality, uniqueness, output shape, and greedy-vs-global behavior;
+- human-in-the-loop decision design.
+
+It does not include:
+
+- real wallets;
+- live Fantasy Top API access;
+- private sessions, tokens, or cookies;
+- production market history;
+- exact private trading logic;
+- server logs or deployment details.
 
 ## Why this exists
 
@@ -29,11 +53,19 @@ real wallets, API sessions, market history, logs, or private heuristics.
 - Loads a synthetic wallet fixture from `data/sample_wallet.json`.
 - Reads the upcoming tournament and all league rules.
 - Scores cards with rarity, star, market, and uncertainty signals.
-- Builds legal decks across all configured leagues.
+- Builds a global non-overlapping allocation across all configured leagues.
 - Keeps each card exclusive across the generated tournament allocation.
 - Reports unused cards separately.
-- Includes tests for legality, uniqueness, bot-command handling, and output
-  shape.
+- Includes tests for legality, uniqueness, bot-command handling, output shape,
+  and a counterexample where global allocation beats greedy allocation.
+
+## 60-second demo
+
+```bash
+python -m pip install -e ".[dev]"
+fantasy-wallet-demo --telegram-message "/report demo-wallet-seven"
+python -m pytest -q
+```
 
 ## Quick start
 
@@ -41,13 +73,8 @@ real wallets, API sessions, market history, logs, or private heuristics.
 python -m pip install -e ".[dev]"
 python -m fantasy_strategy_demo --wallet demo-wallet-seven --fixture data/sample_wallet.json
 python -m fantasy_strategy_demo --telegram-message "/report demo-wallet-seven" --fixture data/sample_wallet.json
+fantasy-wallet-demo --telegram-message "/report demo-wallet-seven"
 python -m pytest -q
-```
-
-After installation, the console script is also available:
-
-```bash
-fantasy-top-bot-demo --telegram-message "/report demo-wallet-seven"
 ```
 
 ## Example output
@@ -74,19 +101,29 @@ Starts at: 2026-07-13T18:00:00Z
 - total stars: 21
 
 ## Gold Deck 1
-- projected score: 4562
-- total stars: 21
+- projected score: 4398
+- total stars: 19
 
 ## Silver Deck 1
-- projected score: 3172
-- total stars: 15
+- projected score: 3122
+- total stars: 14
 
 ## Bronze Deck 1
-- projected score: 2365
-- total stars: 14
+- projected score: 2265
+- total stars: 13
 ```
 
 The real command prints the full card list and unused-card section.
+
+## How this maps to AI evaluation work
+
+This project is relevant to AI evaluation because the workflow requires:
+
+- checking output against domain constraints;
+- detecting stale or unsupported recommendations;
+- turning ambiguous domain rules into evaluation criteria;
+- keeping generated recommendations human-reviewed;
+- testing edge cases and failure modes.
 
 ## Original private project scope
 
@@ -94,7 +131,7 @@ The internal system was broader than this public demo. It included:
 
 - wallet ingestion and portfolio reconciliation;
 - tournament-aware player/hero prediction;
-- all-league deck allocation;
+- all-league deck allocation and global package review;
 - market scans and watchlists;
 - Telegram reports for operator review;
 - dashboard/API surfaces for inspection;

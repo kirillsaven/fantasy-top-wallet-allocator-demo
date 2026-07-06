@@ -1,7 +1,7 @@
 # Architecture
 
-This public repository shows a compact Telegram-bot-style wallet allocation
-pipeline.
+This public repository shows a compact wallet allocation pipeline with a
+Telegram-style command interface.
 
 ```mermaid
 flowchart LR
@@ -9,7 +9,7 @@ flowchart LR
   B --> C[Upcoming tournament context]
   C --> D[League legality constraints]
   B --> E[Card scoring]
-  E --> F[All-league deck allocator]
+  E --> F[Global non-overlapping deck allocator]
   D --> F
   F --> G[Wallet allocation report]
   G --> H[Telegram-style Markdown response]
@@ -25,7 +25,7 @@ The private system used a broader version of this loop:
 3. identify the next tournament and league constraints;
 4. normalize cards, heroes, rarity, stars, and eligibility;
 5. estimate forward score and uncertainty;
-6. allocate cards across all relevant leagues and deck slots;
+6. allocate cards globally across all relevant leagues and deck slots;
 7. flag market actions separately from deck recommendations;
 8. generate a human-readable Telegram report;
 9. require human review before irreversible actions.
@@ -36,7 +36,8 @@ The public demo keeps the product structure but removes live integrations:
 
 - synthetic wallet fixture instead of live wallet/API access;
 - synthetic tournament context instead of live Fantasy Top endpoints;
-- compact deterministic optimizer instead of private production heuristics;
+- compact global optimizer for the synthetic fixture instead of private
+  production heuristics;
 - local Telegram-command simulation instead of a real bot token.
 
 ## Design principles
