@@ -20,7 +20,7 @@ It demonstrates:
 - global deck allocation over a synthetic fixture;
 - risk-adjusted scoring;
 - synthetic data design;
-- QA tests for legality, uniqueness, output shape, and greedy-vs-global behavior;
+- QA tests for legality, uniqueness, output shape, independent brute-force verification, and greedy-vs-global behavior;
 - human-in-the-loop decision design.
 
 It does not include:
@@ -57,7 +57,26 @@ real wallets, API sessions, market history, logs, or private heuristics.
 - Keeps each card exclusive across the generated tournament allocation.
 - Reports unused cards separately.
 - Includes tests for legality, uniqueness, bot-command handling, output shape,
-  and a counterexample where global allocation beats greedy allocation.
+  independent brute-force verification, and a counterexample where global
+  allocation beats greedy allocation.
+
+## What “global allocation” means in this demo
+
+For the synthetic fixture, the public optimizer enumerates every legal deck
+candidate for every configured league slot, then searches non-overlapping package
+combinations with a bitmask dynamic-programming pass.
+
+The demo objective is explicit and deterministic:
+
+1. fill as many feasible deck slots as possible;
+2. maximize total risk-adjusted utility;
+3. maximize total projected score;
+4. minimize total market cost.
+
+This is an exact global search for the compact public fixture. It is not the full
+private production allocator, which also handled live wallet ingestion, broader
+market data, production heuristics, reward/EV modeling, coverage layers, and
+operator-specific review logic.
 
 ## 60-second demo
 
