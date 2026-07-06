@@ -36,7 +36,7 @@ private wallets, API sessions, market history, logs, or proprietary heuristics.
 ```bash
 python -m pip install -e ".[dev]"
 python -m fantasy_strategy_demo data/sample_portfolio.json
-pytest -q
+python -m pytest -q
 ```
 
 ## Example output
@@ -45,14 +45,28 @@ pytest -q
 # Strategy Package
 
 ## Bronze
-- projected score: 2640
-- risk-adjusted utility: 2721.5
+- projected score: 3395
+- risk-adjusted utility: 2976.8
+- total stars: 12
+- estimated market cost: 0.1060 ETH
 - cards:
-  - AlphaBuilder rare 3 stars
-  - SignalScout rare 3 stars
-  - MetaRunner common 2 stars
-  - DeckPilot common 2 stars
-  - QuietEdge common 1 stars
+  - AlphaBuilder rare 3 stars (score 930)
+  - SignalScout rare 3 stars (score 885)
+  - MetaRunner common 2 stars (score 560)
+  - DeckPilot common 2 stars (score 520)
+  - StableHand common 2 stars (score 500)
+
+## Silver
+- projected score: 4195
+- risk-adjusted utility: 4029.4
+- total stars: 17
+- estimated market cost: 0.2270 ETH
+- cards:
+  - TrendSniper epic 5 stars (score 1160)
+  - VolatilityLab epic 5 stars (score 1080)
+  - DataCloser rare 4 stars (score 975)
+  - LateBreaker common 2 stars (score 510)
+  - QuietEdge common 1 stars (score 470)
 ```
 
 ## Original project scope
@@ -68,8 +82,10 @@ The internal system was broader than this demo. It included:
 - regression guards and report-quality audits;
 - fail-closed behavior around missing data or authentication.
 
-See [docs/case-study.md](docs/case-study.md) and
-[docs/architecture.md](docs/architecture.md) for the public case-study version.
+See [docs/case-study.md](docs/case-study.md),
+[docs/architecture.md](docs/architecture.md), and
+[docs/portfolio-summary.md](docs/portfolio-summary.md) for the public
+case-study version.
 
 ## Sanitization
 
@@ -88,4 +104,3 @@ See [docs/sanitization.md](docs/sanitization.md).
 This is intended as a public portfolio artifact for AI evaluation, product
 testing, Web3 strategy, and AI-assisted product-building roles. It demonstrates
 the ability to convert domain expertise into a working, tested decision tool.
-
